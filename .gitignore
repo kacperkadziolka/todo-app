@@ -34,6 +34,7 @@ build/
 
 ### Custom ###
 /src/main/resources/application.properties
+src/main/java/com/kkadziolka/todo_app/AtApplicationStart.java
 /mvnw.cmd
 /mvnw
 /.mvn/

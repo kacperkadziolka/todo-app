@@ -18,7 +18,7 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @GetMapping("/allTodo")
+    @GetMapping("/alltodo")
     public List<Todo> getAllTodo() {
         return todoService.getAllTodo();
     }
@@ -26,6 +26,16 @@ public class TodoController {
     @DeleteMapping("/delete/{id}")
     public void deleteTodo(@PathVariable("id") Long id) {
         todoService.deleteTodo(id);
+    }
+
+    @PostMapping("/create")
+    public void createTodo(@RequestBody Todo todo) {
+        todoService.createTodo(todo);
+    }
+
+    @PutMapping("/updatestatus/{id}")
+    public void updateTodoStatus(@PathVariable("id") Long id) {
+        todoService.updateTodoStatus(id);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.kkadziolka.todo_app.service;
 
+import com.kkadziolka.todo_app.exception.TodoAlreadyExistsException;
+import com.kkadziolka.todo_app.exception.TodoNotFoundException;
 import com.kkadziolka.todo_app.model.Todo;
 import com.kkadziolka.todo_app.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,23 +31,32 @@ public class TodoService {
 
     public void createTodo(Todo todo) {
         Optional<Todo> optionalTodo = todoRepository.findByDescription(todo.getDescription());
+
         if (optionalTodo.isPresent()) {
-            throw new IllegalStateException("The same task is already exist in your Todo list!");
+            throw new TodoAlreadyExistsException(todo.getDescription());
         }
         else {
-            // todo.setCreatedOn(LocalDate.now());
+            todo.setCreatedOn(LocalDate.now());
             todoRepository.save(todo);
         }
+
+        /*
+        todoRepository.findByDescription(todo.getDescription()).ifPresentOrElse(optionalTodo -> {
+            throw new TodoAlreadyExistsException(todo.getDescription());
+        }, () -> {
+            todo.setCreatedOn(LocalDate.now());
+            todoRepository.save(todo);
+        });
+        */
     }
 
-    public void todoStatusUpdate(Long id, boolean status) {
-        Optional<Todo> todo = todoRepository.findById(id);
-        if (todo.isPresent()) {
-            todo.get().setStatus(status);
-        }
-        else {
-            throw new IllegalStateException("Task does not exist");
-        }
+    public void updateTodoStatus(Long id) {
+        todoRepository.findById(id)
+                .map(todo -> {
+                    todo.setStatus(true);
+                    return todoRepository.save(todo);
+                })
+                .orElseThrow(() -> new TodoNotFoundException(id));
     }
 
 }
