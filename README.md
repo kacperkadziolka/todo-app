@@ -1,5 +1,5 @@
 # Spring Boot To-Do List Application
-Focuses on back-end web application that provides the REST API for the purpose of managing your tasks.
+Web application focused on back-end which provides the REST API endpoints for the purpose of managing your daily to-do tasks.
 </br>Created to improve important programming skills used in daily Java and Spring Boot development.
 
 
@@ -16,6 +16,7 @@ Focuses on back-end web application that provides the REST API for the purpose o
 - It provides the REST API endpoint for the GET, PUT, POST and DELETE methods.
 - The application uses MySQL for data storage and H2 as an in-memory database for integration testing.
 - Application flow is handled with optionals and custom exceptions.
+- Tests are implemented using JUnit and Mockito
 - Unit and integration tests cover 100% of the code, and everything has been tested for the second time using Postman.
 
 ![Test Coverage](https://github.com/kacperkadziolka/kacperkadziolka/blob/main/todo-app/tests.PNG)
