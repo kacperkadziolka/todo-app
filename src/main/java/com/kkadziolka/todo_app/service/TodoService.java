@@ -26,37 +26,43 @@ public class TodoService {
     }
 
     public void deleteTodo(Long id) {
-        todoRepository.deleteById(id);
+        if (todoRepository.findById(id).isPresent()) {
+            todoRepository.deleteById(id);
+        }
+        else {
+            throw new TodoNotFoundException(id);
+        }
     }
 
     public void createTodo(Todo todo) {
-        Optional<Todo> optionalTodo = todoRepository.findByDescription(todo.getDescription());
-
-        if (optionalTodo.isPresent()) {
+        if (todoRepository.findByDescription(todo.getDescription()).isPresent()) {
             throw new TodoAlreadyExistsException(todo.getDescription());
         }
         else {
             todo.setCreatedOn(LocalDate.now());
             todoRepository.save(todo);
         }
-
-        /*
-        todoRepository.findByDescription(todo.getDescription()).ifPresentOrElse(optionalTodo -> {
-            throw new TodoAlreadyExistsException(todo.getDescription());
-        }, () -> {
-            todo.setCreatedOn(LocalDate.now());
-            todoRepository.save(todo);
-        });
-        */
     }
 
     public void updateTodoStatus(Long id) {
+        Optional<Todo> todo = todoRepository.findById(id);
+        if (todo.isPresent()) {
+            todo.get().setStatus(true);
+            todoRepository.save(todo.get());
+        }
+        else {
+            throw new TodoNotFoundException(id);
+        }
+
+        /*
         todoRepository.findById(id)
                 .map(todo -> {
                     todo.setStatus(true);
                     return todoRepository.save(todo);
                 })
                 .orElseThrow(() -> new TodoNotFoundException(id));
+         */
+
     }
 
 }
